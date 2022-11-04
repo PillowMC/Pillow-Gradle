@@ -1,0 +1,62 @@
+plugins {
+    // Apply the Java Gradle plugin development plugin to add support for developing Gradle plugins
+    id 'java-gradle-plugin'
+    id "org.jetbrains.kotlin.jvm" version "1.5.31"
+    id "maven-publish"
+}
+group = 'net.pillowmc'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+    mavenLocal()
+    maven{
+        url "https://maven.minecraftforge.net"
+    }
+    maven{
+        url "https://maven.fabricmc.net"
+    }
+}
+
+dependencies {
+    // Align versions of all Kotlin components
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+
+    // Use the Kotlin JDK 8 standard library.
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // Use ForgeGradle
+    implementation("net.minecraftforge.gradle:ForgeGradle:5.1.52")
+    implementation("net.minecraftforge:artifactural:3.0.8")
+    implementation("net.minecraftforge:srgutils:0.4.3")
+    implementation("net.fabricmc:tiny-remapper:0.8.2")
+    implementation("org.apache.commons:commons-csv:1.4")
+    implementation("net.pillowmc:pillow-remapper:0.1-SNAPSHOT")
+}
+
+gradlePlugin {
+    // Define the plugin
+    plugins {
+        pillowgradle {
+            id = "net.pillowmc.pillowgradle"
+            implementationClass = "net.pillowmc.pillow.gradle.PillowGradlePlugin"
+        }
+    }
+}
+
+publishing {
+    publications {
+//        maven(MavenPublication) {
+//            groupId = 'net.pillowmc'
+//            artifactId = 'pillow-gradle'
+//            from components.java
+//        }
+        pluginMaven(MavenPublication) {
+            artifactId = 'pillowgradle'
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
