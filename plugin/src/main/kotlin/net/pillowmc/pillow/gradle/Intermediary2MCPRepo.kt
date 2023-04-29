@@ -99,10 +99,10 @@ class Intermediary2MCPRepo(cache: File, private val project: Project) : BaseRepo
                     METHOD.replace(
                         CLASS.replace(
                             FULL_CLASS.replace(ips.readAllBytes().decodeToString()) {
-                                mappings["net/minecraft/" + it.value.substring(14).replace(".", "$")]?:it.value.replace("/", ".").replace("$", ".")
+                                (mappings["net/minecraft/" + it.value.substring(14).replace(".", "$")]?:it.value).replace("/", ".").replace("$", ".")
                             }
                         ) {
-                            mappings["net/minecraft/" + it.value.replace(".", "$")]?:it.value.replace(Regex(".+/"), "").replace("$", ".")
+                            (mappings["net/minecraft/" + it.value.replace(".", "$")]?:it.value).replace(Regex(".+/"), "").replace("$", ".")
                         }
                     ) {
                         mappings[it.value]?: run {
